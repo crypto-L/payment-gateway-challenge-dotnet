@@ -5,7 +5,7 @@ namespace PaymentGateway.Api.Integrations;
 
 public interface IBankIntegrationClient
 {
-    Task<PaymentAuthorizationResponse> ProcessPaymentAsync(PaymentRequest paymentRequest);
+    Task<ExternalPaymentAuthorizationResponse> ProcessPaymentAsync(ExternalPaymentRequest externalPaymentRequest);
 
     public void RetrievePayment();
 }

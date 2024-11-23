@@ -5,18 +5,18 @@ namespace PaymentGateway.Api.Integrations;
 
 public static class ApiResponseHelper
 {
-    public static async Task<PaymentAuthorizationResponse> HandleApiResponse(HttpResponseMessage response, JsonSerializerOptions serializerOptions, bool isErrorExpected = false)
+    public static async Task<ExternalPaymentAuthorizationResponse> HandleApiResponse(HttpResponseMessage response, JsonSerializerOptions serializerOptions)
     {
         var content = await response.Content.ReadAsStringAsync();
         
-        var result = new PaymentAuthorizationResponse
+        var result = new ExternalPaymentAuthorizationResponse
         {
             StatusCode = response.StatusCode
         };
 
         if (response.IsSuccessStatusCode)
         {
-            result.Details = JsonSerializer.Deserialize<PaymentAuthorizationResponse.AuthorizationDetails>(content, serializerOptions);
+            result.Details = JsonSerializer.Deserialize<ExternalPaymentAuthorizationResponse.AuthorizationDetails>(content, serializerOptions);
         }
         else
         {

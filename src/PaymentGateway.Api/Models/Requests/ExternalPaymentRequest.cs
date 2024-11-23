@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace PaymentGateway.Api.Models.Requests;
 
-public class PaymentRequest
+public class ExternalPaymentRequest
 {
     public string CardNumber { get; set; }
     public string ExpiryDate { get; set; }

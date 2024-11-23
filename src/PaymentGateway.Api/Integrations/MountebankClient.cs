@@ -21,23 +21,18 @@ public class MountebankClient : IBankIntegrationClient
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<PaymentAuthorizationResponse> ProcessPaymentAsync(PaymentRequest paymentRequest)
+    public async Task<ExternalPaymentAuthorizationResponse> ProcessPaymentAsync(ExternalPaymentRequest externalPaymentRequest)
     {
         var client = _httpClientFactory.CreateClient();
 
-        var serializedRequest = JsonSerializer.Serialize(paymentRequest, _serializerOptions);
+        var serializedRequest = JsonSerializer.Serialize(externalPaymentRequest, _serializerOptions);
         var url = $"{_configuration["MountebankIntegration:BaseUrl"]}/payments";
 
         var content = new StringContent(serializedRequest, System.Text.Encoding.UTF8, "application/json");
         
         var response = await client.PostAsync(url, content);
         
-        var e = await ApiResponseHelper.HandleApiResponse(response, _serializerOptions);
-        Console.WriteLine(e.StatusCode);
-        Console.WriteLine(e.ErrorMessage);
-        
-        
-        return new PaymentAuthorizationResponse();
+        return await ApiResponseHelper.HandleApiResponse(response, _serializerOptions);
     }
 
     public void RetrievePayment()

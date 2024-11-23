@@ -2,7 +2,7 @@ using System.Net;
 
 namespace PaymentGateway.Api.Models.Responses;
 
-public class PaymentAuthorizationResponse
+public class ExternalPaymentAuthorizationResponse
 {
     public HttpStatusCode StatusCode { get; set; }
     public AuthorizationDetails? Details { get; set; }

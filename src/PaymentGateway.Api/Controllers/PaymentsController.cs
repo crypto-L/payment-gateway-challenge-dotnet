@@ -31,33 +31,38 @@ public class PaymentsController : Controller
     [HttpGet("test")]
     public async Task<ActionResult> Test()
     {
-        var authReq = new PaymentRequest()
+        var authReq = new PostPaymentRequest()
         {
             CardNumber = "2222405343248877",
-            ExpiryDate = "04/2025",
+            ExpiryMonth = 4,
+            ExpiryYear = 2025,
             Currency = "GBP",
             Amount = 100,
-            Cvv = "123"
+            Cvv = 123
         };
         
-        var notAuthReq = new PaymentRequest()
+        var notAuthReq = new PostPaymentRequest()
         {
             CardNumber = "2222405343248112",
-            ExpiryDate = "01/2026",
+            ExpiryMonth = 1,
+            ExpiryYear = 2026,
             Currency = "USD",
             Amount = 60000,
-            Cvv = "456"
+            Cvv = 456
         };
         
-        var badReq = new PaymentRequest()
+        var badReq = new PostPaymentRequest()
         {
             CardNumber = "2222405343248877",
-            ExpiryDate = "04/2025",
+            ExpiryMonth = 4,
+            ExpiryYear = 2025,
             Currency = "GBP",
             Amount = 101,
-            Cvv = "123"
+            Cvv = 123
         };
-        await _mountebank.ProcessPaymentAsync(badReq);
+
+        var service = new MountebankService();
+        await service.ProcessPayment(notAuthReq);
         return Ok("Heh");
     }
 }
