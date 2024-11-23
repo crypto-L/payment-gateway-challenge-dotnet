@@ -32,7 +32,7 @@ public class MountebankClient : IBankIntegrationClient
         
         var response = await client.PostAsync(url, content);
         
-        return await ApiResponseHelper.HandleApiResponse(response, _serializerOptions);
+        return await ApiResponseHelper.HandleExternalApiResponse(response, _serializerOptions);
     }
 
     public void RetrievePayment()

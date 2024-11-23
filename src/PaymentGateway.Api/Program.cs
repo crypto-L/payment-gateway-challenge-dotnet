@@ -13,7 +13,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 
 builder.Services.AddSingleton<PaymentsRepository>();
+builder.Services.AddSingleton<MountebankService>();
 
+builder.RegisterMappings();
 builder.RegisterExternalServices();
 
 var app = builder.Build();

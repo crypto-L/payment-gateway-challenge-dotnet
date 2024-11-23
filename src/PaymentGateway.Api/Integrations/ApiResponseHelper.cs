@@ -5,7 +5,7 @@ namespace PaymentGateway.Api.Integrations;
 
 public static class ApiResponseHelper
 {
-    public static async Task<ExternalPaymentAuthorizationResponse> HandleApiResponse(HttpResponseMessage response, JsonSerializerOptions serializerOptions)
+    public static async Task<ExternalPaymentAuthorizationResponse> HandleExternalApiResponse(HttpResponseMessage response, JsonSerializerOptions serializerOptions)
     {
         var content = await response.Content.ReadAsStringAsync();
         

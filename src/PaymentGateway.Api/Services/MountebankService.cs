@@ -1,4 +1,9 @@
+using System.Text.Json;
+
+using AutoMapper;
+
 using PaymentGateway.Api.Common.Validation;
+using PaymentGateway.Api.Integrations;
 using PaymentGateway.Api.Models.Requests;
 using PaymentGateway.Api.Services.Validation;
 
@@ -6,11 +11,29 @@ namespace PaymentGateway.Api.Services;
 
 public class MountebankService : IBankService
 {
-    public Task ProcessPayment(PostPaymentRequest paymentRequest)
+    private readonly MountebankClient _mountebankClient;
+    private readonly IMapper _mapper;
+
+    public MountebankService(MountebankClient mountebankClient, IMapper mapper)
+    {
+        _mountebankClient = mountebankClient;
+        _mapper = mapper;
+    }
+
+    public async Task ProcessPayment(PostPaymentRequest paymentRequest)
     {
         var validationErrors = ValidatePaymentRequest(paymentRequest);
 
-        return Task.CompletedTask;
+        if (validationErrors.Count > 0)
+        {
+            // return not processed
+        }
+
+        var externalPaymentRequest = _mapper.Map<ExternalPaymentRequest>(paymentRequest);
+        
+        var paymentResult = await _mountebankClient.ProcessPaymentAsync(externalPaymentRequest);
+        
+        Console.WriteLine($"Result: {JsonSerializer.Serialize(paymentResult)}");
     }
 
     private List<ValidationFailure> ValidatePaymentRequest(PostPaymentRequest paymentRequest)

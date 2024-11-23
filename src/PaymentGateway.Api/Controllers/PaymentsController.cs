@@ -12,12 +12,12 @@ namespace PaymentGateway.Api.Controllers;
 public class PaymentsController : Controller
 {
     private readonly PaymentsRepository _paymentsRepository;
-    private readonly MountebankClient _mountebank;
+    private readonly MountebankService _mountebankService;
 
-    public PaymentsController(PaymentsRepository paymentsRepository, MountebankClient mountebankClient)
+    public PaymentsController(PaymentsRepository paymentsRepository, MountebankService mountebankService)
     {
         _paymentsRepository = paymentsRepository;
-        _mountebank = mountebankClient;
+        _mountebankService = mountebankService;
     }
 
     [HttpGet("{id:guid}")]
@@ -60,9 +60,8 @@ public class PaymentsController : Controller
             Amount = 101,
             Cvv = 123
         };
-
-        var service = new MountebankService();
-        await service.ProcessPayment(notAuthReq);
+        
+        await _mountebankService.ProcessPayment(badReq);
         return Ok("Heh");
     }
 }
