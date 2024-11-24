@@ -19,6 +19,13 @@ public class PaymentProfile : Profile
                 opt => opt.MapFrom(
                     src => $"{src.ExpiryMonth:D2}/{src.ExpiryYear}"));
         
+        CreateMap<PostPaymentRequest, PostPaymentResponse>()
+            .ForMember(dest => dest.CardNumberLastFour, opt => opt.MapFrom(src => GetLastFourDigits(src.CardNumber)))
+            .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.Currency))
+            .ForMember(dest => dest.ExpiryMonth, opt => opt.MapFrom(src => src.ExpiryMonth))
+            .ForMember(dest => dest.ExpiryYear, opt => opt.MapFrom(src => src.ExpiryYear))
+            .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))
+            .ForMember(dest => dest.Id, opt => opt.Ignore());
         
         CreateMap<(ExternalPaymentRequest Request, ExternalPaymentAuthorizationResponse Response), Payment>()
             .ForMember(dest => dest.CardNumber, opt => opt.MapFrom(src => src.Request.CardNumber))
@@ -28,6 +35,7 @@ public class PaymentProfile : Profile
             .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Request.Amount))
             .ForMember(dest => dest.Cvv, opt => opt.MapFrom(src => src.Request.Cvv))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => GetPaymentStatus(src.Response)))
+            .ForMember(dest => dest.AuthorizationCode, opt => opt.MapFrom(src => src.Response.Details != null ? src.Response.Details.AuthorizationCode : null))
             .ForMember(dest => dest.Id, opt => opt.Ignore());
         
         CreateMap<Payment, GetPaymentResponse>()
@@ -62,6 +70,11 @@ public class PaymentProfile : Profile
         if (cardNumber.Length < 4)
         {
             throw new ArgumentException("Card number must have at least 4 digits.");
+        }
+        
+        if (!cardNumber.All(char.IsDigit))
+        {
+            throw new ArgumentException("Card number contains invalid characters. It must contain only numeric digits.");
         }
         
         return int.Parse(cardNumber.Substring(cardNumber.Length - 4));

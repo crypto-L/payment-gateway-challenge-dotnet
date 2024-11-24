@@ -6,6 +6,7 @@ public class Payment
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public PaymentStatus Status { get; set; }
+    public string? AuthorizationCode { get; set; }
     public string CardNumber { get; set; }
     public int ExpiryMonth { get; set; }
     public int ExpiryYear { get; set; }

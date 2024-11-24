@@ -2,7 +2,10 @@
 
 using Microsoft.AspNetCore.Mvc;
 
+using PaymentGateway.Api.Common.Validation;
+using PaymentGateway.Api.Controllers.Validation;
 using PaymentGateway.Api.DAL;
+using PaymentGateway.Api.Enums;
 using PaymentGateway.Api.Integrations;
 using PaymentGateway.Api.Models.Requests;
 using PaymentGateway.Api.Models.Responses;
@@ -24,11 +27,30 @@ public class PaymentsController : Controller
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<PostPaymentResponse?>> GetPaymentAsync(Guid id)
+    public async Task<ActionResult<GetPaymentResponse?>> GetPaymentAsync(Guid id)
     {
-        var payment = _paymentsRepository.Get(id);
-
+        var payment = _mountebankService.RetrievePayment(id);
+        
+        if (payment == null)
+        {
+            return NotFound(new { Message = "Payment not found." });
+        }
         return new OkObjectResult(payment);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<PostPaymentResponse>> PostPaymentAsync(PostPaymentRequest paymentRequest)
+    {
+        var validator = new Validator<PostPaymentRequest>();
+        validator.AddRule(new PostPaymentRequestValidationRule());
+        
+        var errors = validator.Validate(paymentRequest);
+        if (errors.Count > 0)
+        {
+            return new OkObjectResult(_mountebankService.CreateRejectedPostResponse(paymentRequest));
+        }
+        
+        return NotFound("HEH");
     }
 
     [HttpGet("test")]
@@ -64,10 +86,11 @@ public class PaymentsController : Controller
             Cvv = 123
         };
         
-        var paymentId = await _mountebankService.ProcessPayment(notAuthReq);
+        var paymentId = await _mountebankService.ProcessPayment(authReq);
+        
         if (paymentId.HasValue)
         {
-            var payment = _paymentsRepository.Get(paymentId.Value);
+            var payment = _mountebankService.RetrievePayment(paymentId.Value);
             Console.WriteLine(JsonSerializer.Serialize(payment));
         }
         return Ok(paymentId);

@@ -3,6 +3,7 @@ using AutoMapper;
 using PaymentGateway.Api.Common.Validation;
 using PaymentGateway.Api.DAL;
 using PaymentGateway.Api.Domain;
+using PaymentGateway.Api.Enums;
 using PaymentGateway.Api.Integrations;
 using PaymentGateway.Api.Models.Requests;
 using PaymentGateway.Api.Models.Responses;
@@ -53,6 +54,13 @@ public class MountebankService : IBankService
         var getPaymentResponse = _mapper.Map<GetPaymentResponse>(payment);
         
         return getPaymentResponse;
+    }
+
+    public PostPaymentResponse CreateRejectedPostResponse(PostPaymentRequest request)
+    {
+        var response = _mapper.Map<PostPaymentResponse>(request);
+        response.Status = PaymentStatus.Rejected;
+        return response;
     }
 
     private List<ValidationFailure> ValidatePaymentRequest(PostPaymentRequest paymentRequest)
