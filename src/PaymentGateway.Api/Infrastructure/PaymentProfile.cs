@@ -19,7 +19,7 @@ public class PaymentProfile : Profile
                 opt => opt.MapFrom(
                     src => $"{src.ExpiryMonth:D2}/{src.ExpiryYear}"));
         
-        CreateMap<PostPaymentRequest, PostPaymentResponse>()
+        CreateMap<PostPaymentRequest, PaymentResponse>()
             .ForMember(dest => dest.CardNumberLastFour, opt => opt.MapFrom(src => GetLastFourDigits(src.CardNumber)))
             .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.Currency))
             .ForMember(dest => dest.ExpiryMonth, opt => opt.MapFrom(src => src.ExpiryMonth))
@@ -38,7 +38,7 @@ public class PaymentProfile : Profile
             .ForMember(dest => dest.AuthorizationCode, opt => opt.MapFrom(src => src.Response.Details != null ? src.Response.Details.AuthorizationCode : null))
             .ForMember(dest => dest.Id, opt => opt.Ignore());
         
-        CreateMap<Payment, GetPaymentResponse>()
+        CreateMap<Payment, PaymentResponse>()
             .ForMember(dest => dest.CardNumberLastFour, opt => opt.MapFrom(src => GetLastFourDigits(src.CardNumber)))
             .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.CurrencyCode))
             .ForMember(dest => dest.ExpiryMonth, opt => opt.MapFrom(src => src.ExpiryMonth))

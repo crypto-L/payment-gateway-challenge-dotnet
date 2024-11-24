@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using PaymentGateway.Api.Common.Validation;
 using PaymentGateway.Api.Controllers.Validation;
 using PaymentGateway.Api.DAL;
-using PaymentGateway.Api.Enums;
-using PaymentGateway.Api.Integrations;
 using PaymentGateway.Api.Models.Requests;
 using PaymentGateway.Api.Models.Responses;
 using PaymentGateway.Api.Services;
@@ -27,9 +25,9 @@ public class PaymentsController : Controller
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<GetPaymentResponse?>> GetPaymentAsync(Guid id)
+    public async Task<ActionResult<PaymentResponse?>> GetPaymentAsync(Guid id)
     {
-        var payment = _mountebankService.RetrievePayment<GetPaymentResponse>(id);
+        var payment = _mountebankService.RetrievePayment<PaymentResponse>(id);
         
         if (payment == null)
         {
@@ -39,7 +37,7 @@ public class PaymentsController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<PostPaymentResponse>> PostPaymentAsync(PostPaymentRequest paymentRequest)
+    public async Task<ActionResult<PaymentResponse>> PostPaymentAsync(PostPaymentRequest paymentRequest)
     {
         var validator = new Validator<PostPaymentRequest>();
         validator.AddRule(new PostPaymentRequestValidationRule());
@@ -56,8 +54,8 @@ public class PaymentsController : Controller
             return new OkObjectResult(_mountebankService.CreateRejectedPostResponse(paymentRequest));
         }
 
-        //var payment = _mountebankService.RetrievePayment()
-        
+        var payment = _mountebankService.RetrievePayment<PaymentResponse>(paymentId.Value);
+        Console.WriteLine(JsonSerializer.Serialize(payment));
         return NotFound("HEH");
     }
 
@@ -98,7 +96,7 @@ public class PaymentsController : Controller
         
         if (paymentId.HasValue)
         {
-            var payment = _mountebankService.RetrievePayment<GetPaymentResponse>(paymentId.Value);
+            var payment = _mountebankService.RetrievePayment<PaymentResponse>(paymentId.Value);
             Console.WriteLine(JsonSerializer.Serialize(payment));
         }
         return Ok(paymentId);

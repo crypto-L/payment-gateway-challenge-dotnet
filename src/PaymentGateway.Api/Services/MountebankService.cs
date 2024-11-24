@@ -56,9 +56,9 @@ public class MountebankService : IBankService
         return response;
     }
 
-    public PostPaymentResponse CreateRejectedPostResponse(PostPaymentRequest request)
+    public PaymentResponse CreateRejectedPostResponse(PostPaymentRequest request)
     {
-        var response = _mapper.Map<PostPaymentResponse>(request);
+        var response = _mapper.Map<PaymentResponse>(request);
         response.Status = PaymentStatus.Rejected.ToString();
         return response;
     }
