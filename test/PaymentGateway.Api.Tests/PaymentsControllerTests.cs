@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 using PaymentGateway.Api.Controllers;
 using PaymentGateway.Api.DAL;
+using PaymentGateway.Api.Domain;
+using PaymentGateway.Api.Enums;
 using PaymentGateway.Api.Models.Responses;
 using PaymentGateway.Api.Services;
 
@@ -18,18 +20,18 @@ public class PaymentsControllerTests
     public async Task RetrievesAPaymentSuccessfully()
     {
         // Arrange
-        var payment = new PaymentResponse()
+        var payment = new Payment()
         {
-            Id = Guid.NewGuid(),
+            Status = PaymentStatus.Authorized,
             ExpiryYear = _random.Next(2023, 2030),
             ExpiryMonth = _random.Next(1, 12),
             Amount = _random.Next(1, 10000),
-            CardNumberLastFour = _random.Next(1111, 9999),
-            Currency = "GBP"
+            CurrencyCode = "EUR",
+            Cvv = 123
         };
 
         var paymentsRepository = new PaymentsRepository();
-        //paymentsRepository.Add(payment);
+        paymentsRepository.Add(payment);
 
         var webApplicationFactory = new WebApplicationFactory<PaymentsController>();
         var client = webApplicationFactory.WithWebHostBuilder(builder =>

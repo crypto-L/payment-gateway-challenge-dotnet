@@ -13,12 +13,10 @@ namespace PaymentGateway.Api.Controllers;
 [ApiController]
 public class PaymentsController : Controller
 {
-    private readonly PaymentsRepository _paymentsRepository;
     private readonly MountebankService _mountebankService;
 
     public PaymentsController(PaymentsRepository paymentsRepository, MountebankService mountebankService)
     {
-        _paymentsRepository = paymentsRepository;
         _mountebankService = mountebankService;
     }
 
