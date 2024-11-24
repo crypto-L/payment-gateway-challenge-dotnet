@@ -44,14 +44,14 @@ public class MountebankService : IBankService
         return payment.Id;
     }
 
-    public T? RetrievePayment<T>(Guid id) where T : class
+    public PaymentResponse? RetrievePayment(Guid id)
     {
         var payment = _paymentsRepository.Get(id);
         if (payment == null)
         {
             return null;
         }
-        var response = _mapper.Map<T>(payment);
+        var response = _mapper.Map<PaymentResponse>(payment);
         
         return response;
     }
