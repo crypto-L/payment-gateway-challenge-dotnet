@@ -50,6 +50,12 @@ public class PaymentsController : Controller
             return new OkObjectResult(_mountebankService.CreateRejectedPostResponse(paymentRequest));
         }
         
+        var paymentId = await _mountebankService.ProcessPayment(paymentRequest);
+        if (!paymentId.HasValue)
+        {
+            return new OkObjectResult(_mountebankService.CreateRejectedPostResponse(paymentRequest));
+        }
+        
         return NotFound("HEH");
     }
 

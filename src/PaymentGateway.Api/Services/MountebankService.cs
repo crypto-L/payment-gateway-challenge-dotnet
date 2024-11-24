@@ -59,7 +59,7 @@ public class MountebankService : IBankService
     public PostPaymentResponse CreateRejectedPostResponse(PostPaymentRequest request)
     {
         var response = _mapper.Map<PostPaymentResponse>(request);
-        response.Status = PaymentStatus.Rejected;
+        response.Status = PaymentStatus.Rejected.ToString();
         return response;
     }
 

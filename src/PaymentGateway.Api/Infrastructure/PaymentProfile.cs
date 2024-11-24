@@ -44,7 +44,7 @@ public class PaymentProfile : Profile
             .ForMember(dest => dest.ExpiryMonth, opt => opt.MapFrom(src => src.ExpiryMonth))
             .ForMember(dest => dest.ExpiryYear, opt => opt.MapFrom(src => src.ExpiryYear))
             .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
     }
     
