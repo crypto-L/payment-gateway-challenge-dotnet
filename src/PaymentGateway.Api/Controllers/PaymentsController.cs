@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+using PaymentGateway.Api.DAL;
 using PaymentGateway.Api.Integrations;
 using PaymentGateway.Api.Models.Requests;
 using PaymentGateway.Api.Models.Responses;
@@ -61,7 +62,7 @@ public class PaymentsController : Controller
             Cvv = 123
         };
         
-        await _mountebankService.ProcessPayment(notAuthReq);
+        await _mountebankService.ProcessPayment(badReq);
         return Ok("Heh");
     }
 }
