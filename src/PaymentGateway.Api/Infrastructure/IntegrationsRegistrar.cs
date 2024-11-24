@@ -6,6 +6,6 @@ public static class IntegrationsRegistrar
 {
     public static void RegisterExternalServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<MountebankClient>();
+        builder.Services.AddSingleton<IBankIntegrationClient, MountebankClient>();
     }
 }

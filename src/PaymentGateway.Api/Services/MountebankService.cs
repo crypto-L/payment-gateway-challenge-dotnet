@@ -13,11 +13,11 @@ namespace PaymentGateway.Api.Services;
 
 public class MountebankService : IBankService
 {
-    private readonly MountebankClient _mountebankClient;
+    private readonly IBankIntegrationClient _mountebankClient;
     private readonly PaymentsRepository _paymentsRepository;
     private readonly IMapper _mapper;
 
-    public MountebankService(MountebankClient mountebankClient, PaymentsRepository paymentsRepository,IMapper mapper)
+    public MountebankService(IBankIntegrationClient mountebankClient, PaymentsRepository paymentsRepository,IMapper mapper)
     {
         _mountebankClient = mountebankClient;
         _paymentsRepository = paymentsRepository;

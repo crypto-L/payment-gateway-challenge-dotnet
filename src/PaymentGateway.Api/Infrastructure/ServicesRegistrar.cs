@@ -6,6 +6,6 @@ public static class ServicesRegistrar
 {
     public static void RegisterServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<IBankService, MountebankService>();
+        builder.Services.AddSingleton<IBankService, MountebankService>();
     }
 }
