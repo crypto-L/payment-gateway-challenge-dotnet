@@ -41,13 +41,13 @@ public class PaymentsController : Controller
         var errors = validator.Validate(paymentRequest);
         if (errors.Count > 0)
         {
-            return new OkObjectResult(_mountebankService.CreateRejectedPostResponse(paymentRequest));
+            return BadRequest(_mountebankService.CreateRejectedPostResponse(paymentRequest));
         }
         
         var paymentId = await _mountebankService.ProcessPayment(paymentRequest);
         if (!paymentId.HasValue)
         {
-            return new OkObjectResult(_mountebankService.CreateRejectedPostResponse(paymentRequest));
+            return BadRequest(_mountebankService.CreateRejectedPostResponse(paymentRequest));
         }
 
         var payment = _mountebankService.RetrievePayment(paymentId.Value);
