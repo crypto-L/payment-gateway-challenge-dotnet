@@ -1,5 +1,3 @@
-using System.Text.Json;
-
 using AutoMapper;
 
 using PaymentGateway.Api.Common.Validation;
@@ -25,13 +23,13 @@ public class MountebankService : IBankService
         _mapper = mapper;
     }
 
-    public async Task ProcessPayment(PostPaymentRequest paymentRequest)
+    public async Task<Guid?> ProcessPayment(PostPaymentRequest paymentRequest)
     {
         var validationErrors = ValidatePaymentRequest(paymentRequest);
 
         if (validationErrors.Count > 0)
         {
-            // return REJECTED
+            return null;
         }
 
         var externalPaymentRequest = _mapper.Map<ExternalPaymentRequest>(paymentRequest);
@@ -40,8 +38,21 @@ public class MountebankService : IBankService
         
         var payment = _mapper.Map<(ExternalPaymentRequest, ExternalPaymentAuthorizationResponse), Payment>((externalPaymentRequest, externalPaymentResponse));
         
+        _paymentsRepository.Add(payment);
+
+        return payment.Id;
+    }
+
+    public GetPaymentResponse? RetrievePayment(Guid id)
+    {
+        var payment = _paymentsRepository.Get(id);
+        if (payment == null)
+        {
+            return null;
+        }
+        var getPaymentResponse = _mapper.Map<GetPaymentResponse>(payment);
         
-        Console.WriteLine($"Result: {JsonSerializer.Serialize(payment)}");
+        return getPaymentResponse;
     }
 
     private List<ValidationFailure> ValidatePaymentRequest(PostPaymentRequest paymentRequest)

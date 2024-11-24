@@ -5,6 +5,8 @@ namespace PaymentGateway.Api.Services;
 
 public interface IBankService
 {
-    Task ProcessPayment(PostPaymentRequest paymentRequest);
+    Task<Guid?> ProcessPayment(PostPaymentRequest paymentRequest);
+
+    GetPaymentResponse? RetrievePayment(Guid id);
 
 }

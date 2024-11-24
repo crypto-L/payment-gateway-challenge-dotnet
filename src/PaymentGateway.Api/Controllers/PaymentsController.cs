@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
+
+using Microsoft.AspNetCore.Mvc;
 
 using PaymentGateway.Api.DAL;
 using PaymentGateway.Api.Integrations;
@@ -62,7 +64,12 @@ public class PaymentsController : Controller
             Cvv = 123
         };
         
-        await _mountebankService.ProcessPayment(badReq);
-        return Ok("Heh");
+        var paymentId = await _mountebankService.ProcessPayment(notAuthReq);
+        if (paymentId.HasValue)
+        {
+            var payment = _paymentsRepository.Get(paymentId.Value);
+            Console.WriteLine(JsonSerializer.Serialize(payment));
+        }
+        return Ok(paymentId);
     }
 }

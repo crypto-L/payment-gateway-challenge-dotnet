@@ -34,9 +34,4 @@ public class MountebankClient : IBankIntegrationClient
         
         return await ApiResponseHelper.HandleExternalApiResponse(response, _serializerOptions);
     }
-
-    public void RetrievePayment()
-    {
-        throw new NotImplementedException();
-    }
 }
