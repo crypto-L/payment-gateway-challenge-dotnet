@@ -61,7 +61,7 @@ public class PaymentsController : Controller
             Cvv = 123
         };
         
-        await _mountebankService.ProcessPayment(badReq);
+        await _mountebankService.ProcessPayment(notAuthReq);
         return Ok("Heh");
     }
 }

@@ -33,6 +33,7 @@ public class MountebankService : IBankService
         
         var paymentResult = await _mountebankClient.ProcessPaymentAsync(externalPaymentRequest);
         
+        
         Console.WriteLine($"Result: {JsonSerializer.Serialize(paymentResult)}");
     }
 
@@ -41,6 +42,7 @@ public class MountebankService : IBankService
         var validator = new Validator<PostPaymentRequest>();
         
         validator.AddRule(new CardExpiryDateValidationRule());
+        validator.AddRule(new CurrencyCodeValidationRule());
 
         var errors = validator.Validate(paymentRequest);
 
