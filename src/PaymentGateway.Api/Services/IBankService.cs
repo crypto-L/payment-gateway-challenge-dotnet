@@ -9,4 +9,6 @@ public interface IBankService
 
     PaymentResponse? RetrievePayment(Guid id);
 
+    PaymentResponse CreateRejectedPostResponse(PostPaymentRequest request);
+
 }

@@ -13,9 +13,9 @@ namespace PaymentGateway.Api.Controllers;
 [ApiController]
 public class PaymentsController : Controller
 {
-    private readonly MountebankService _mountebankService;
+    private readonly IBankService _mountebankService;
 
-    public PaymentsController(PaymentsRepository paymentsRepository, MountebankService mountebankService)
+    public PaymentsController(IBankService mountebankService)
     {
         _mountebankService = mountebankService;
     }
