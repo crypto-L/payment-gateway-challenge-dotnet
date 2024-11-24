@@ -44,16 +44,16 @@ public class MountebankService : IBankService
         return payment.Id;
     }
 
-    public GetPaymentResponse? RetrievePayment(Guid id)
+    public T? RetrievePayment<T>(Guid id) where T : class
     {
         var payment = _paymentsRepository.Get(id);
         if (payment == null)
         {
             return null;
         }
-        var getPaymentResponse = _mapper.Map<GetPaymentResponse>(payment);
+        var response = _mapper.Map<T>(payment);
         
-        return getPaymentResponse;
+        return response;
     }
 
     public PostPaymentResponse CreateRejectedPostResponse(PostPaymentRequest request)

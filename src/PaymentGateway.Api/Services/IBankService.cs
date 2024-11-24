@@ -7,6 +7,6 @@ public interface IBankService
 {
     Task<Guid?> ProcessPayment(PostPaymentRequest paymentRequest);
 
-    GetPaymentResponse? RetrievePayment(Guid id);
+    T? RetrievePayment<T>(Guid id) where T : class;
 
 }

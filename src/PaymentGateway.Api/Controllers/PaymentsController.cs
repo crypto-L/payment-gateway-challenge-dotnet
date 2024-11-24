@@ -29,7 +29,7 @@ public class PaymentsController : Controller
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<GetPaymentResponse?>> GetPaymentAsync(Guid id)
     {
-        var payment = _mountebankService.RetrievePayment(id);
+        var payment = _mountebankService.RetrievePayment<GetPaymentResponse>(id);
         
         if (payment == null)
         {
@@ -55,6 +55,8 @@ public class PaymentsController : Controller
         {
             return new OkObjectResult(_mountebankService.CreateRejectedPostResponse(paymentRequest));
         }
+
+        //var payment = _mountebankService.RetrievePayment()
         
         return NotFound("HEH");
     }
@@ -96,7 +98,7 @@ public class PaymentsController : Controller
         
         if (paymentId.HasValue)
         {
-            var payment = _mountebankService.RetrievePayment(paymentId.Value);
+            var payment = _mountebankService.RetrievePayment<GetPaymentResponse>(paymentId.Value);
             Console.WriteLine(JsonSerializer.Serialize(payment));
         }
         return Ok(paymentId);
