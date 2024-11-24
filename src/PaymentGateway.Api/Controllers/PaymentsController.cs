@@ -23,6 +23,11 @@ public class PaymentsController : Controller
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<PaymentResponse?>> GetPaymentAsync(Guid id)
     {
+        if (id == Guid.Empty)
+        {
+            return BadRequest(new { Message = "Invalid payment ID." });
+        }
+        
         var payment = _mountebankService.RetrievePayment(id);
         
         if (payment == null)
