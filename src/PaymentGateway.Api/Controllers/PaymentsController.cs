@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 using PaymentGateway.Api.Common.Validation;
 using PaymentGateway.Api.Controllers.Validation;
@@ -57,48 +55,5 @@ public class PaymentsController : Controller
         var payment = _mountebankService.RetrievePayment(paymentId.Value);
 
         return new OkObjectResult(payment);
-    }
-
-    [HttpGet("test")]
-    public async Task<ActionResult> Test()
-    {
-        var authReq = new PostPaymentRequest()
-        {
-            CardNumber = "2222405343248877",
-            ExpiryMonth = 4,
-            ExpiryYear = 2025,
-            Currency = "GBP",
-            Amount = 100,
-            Cvv = 123
-        };
-        
-        var notAuthReq = new PostPaymentRequest()
-        {
-            CardNumber = "2222405343248112",
-            ExpiryMonth = 1,
-            ExpiryYear = 2026,
-            Currency = "USD",
-            Amount = 60000,
-            Cvv = 456
-        };
-        
-        var badReq = new PostPaymentRequest()
-        {
-            CardNumber = "2222405343248877",
-            ExpiryMonth = 4,
-            ExpiryYear = 2025,
-            Currency = "GBP",
-            Amount = 101,
-            Cvv = 123
-        };
-        
-        var paymentId = await _mountebankService.ProcessPayment(authReq);
-        
-        if (paymentId.HasValue)
-        {
-            var payment = _mountebankService.RetrievePayment(paymentId.Value);
-            Console.WriteLine(JsonSerializer.Serialize(payment));
-        }
-        return Ok(paymentId);
     }
 }

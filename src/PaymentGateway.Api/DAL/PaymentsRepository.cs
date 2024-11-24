@@ -11,11 +11,6 @@ public class PaymentsRepository
         Payments.Add(payment);
     }
 
-    public int Count()
-    {
-        return Payments.Count;
-    }
-
     public Payment? Get(Guid id)
     {
         return Payments.FirstOrDefault(p => p.Id == id);

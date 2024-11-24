@@ -1,5 +1,3 @@
-using PaymentGateway.Api.DAL;
-using PaymentGateway.Api.Services;
 using PaymentGateway.Api.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,11 +11,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddSingleton<PaymentsRepository>();
-builder.Services.AddSingleton<MountebankService>();
-
 builder.RegisterMappings();
+builder.RegisterRepositories();
 builder.RegisterExternalServices();
+builder.RegisterServices();
 
 var app = builder.Build();
 
