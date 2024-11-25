@@ -64,14 +64,14 @@
 - **Clear separation of models for each application layer (data layer/domain, business layer, web API):**  
   It's important to have clear separation between models used in different layers of the application to ensure maintainability and flexibility.
 
-- **Containerize the application:**
+- **Containerize the application**
 
 - **Authentication and database integration:**  
 This would be essential for any production-ready payment gateway.
 
-- **Logging:**
+- **Logging**
 
-- **Improve user input validation:**
+- **Improve user input validation**
 
 - **Add monitoring and audit logs for security violations:**  
   Monitoring and audit logs are critical for tracking suspicious activity and ensuring compliance with security standards. Implementing monitoring for unusual payment patterns, failed login attempts, and other potential security violations would help protect against fraud and unauthorized access.
